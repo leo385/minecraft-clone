@@ -4,6 +4,8 @@
 
 #include "IWindow.h"
 
+#include <memory>
+
 class Window : public IWindow{
 
 public:
@@ -14,6 +16,7 @@ public:
 	int getWidth() const override;
 	int getHeight() const override;
 
+	GLFWwindow* getWindow() const override;
 
 	bool initialize();
 
@@ -27,7 +30,6 @@ public:
 	void swapBuffers();
 	void destroyWindow();
 	
-
 
 private:
 	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);

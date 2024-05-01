@@ -2,15 +2,12 @@
 
 #include "RenderObject.h"
 #include "Shader.h"
-#include "BuffersObjectArray.h"
+#include "BuffersObjectController.h"
+#include "MVP.h"
+#include "Window.h"
 
 #include <vector>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-#include "Window.h"
 
 class Cube : public RenderObject {
 
@@ -24,15 +21,16 @@ public:
 
 private:
 	void compileShaderCube();
+	void processInput();
+	
+	void mvpInit();
 
 	Shader shader;
-	BuffersObjectArray bufferObject;
+	BuffersObjectController bufferObjectController;
+	MVP mvp;
 
-	std::vector<float> vertices{ 0 };
-	std::vector<unsigned int> indices{ 0 };
-
-	glm::mat4 model{ 0 }, view{ 0 }, projection{ 0 };
-	glm::mat4 mvp{ 0 };
+	std::vector<GLfloat> vertices{ 0 };
+	std::vector<GLuint> indices{ 0 };
 
 	glm::vec3 cameraPos{ 0 };
 	glm::vec3 cameraFront{ 0 };

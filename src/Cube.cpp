@@ -8,39 +8,23 @@
 Cube::Cube(const IWindow& window) : _window(window){
 
 	vertices = {
-		// Przód
-		-0.5, -0.5, 0.5,  0.5, -0.5, 0.5,  0.5, 0.5, 0.5,
-		0.5, 0.5, 0.5,  -0.5, 0.5, 0.5,  -0.5, -0.5, 0.5,
-		// Ty³
-		-0.5, -0.5, -0.5,  -0.5, 0.5, -0.5,  0.5, 0.5, -0.5,
-		0.5, 0.5, -0.5,  0.5, -0.5, -0.5,  -0.5, -0.5, -0.5,
-		// Lewo
-		-0.5, 0.5, 0.5,  -0.5, 0.5, -0.5,  -0.5, -0.5, -0.5,
-		-0.5, -0.5, -0.5,  -0.5, -0.5, 0.5,  -0.5, 0.5, 0.5,
-		// Prawo
-		0.5, 0.5, 0.5,  0.5, -0.5, 0.5,  0.5, -0.5, -0.5,
-		0.5, -0.5, -0.5,  0.5, 0.5, -0.5,  0.5, 0.5, 0.5,
-		// Dó³
-		-0.5, -0.5, -0.5,  0.5, -0.5, -0.5,  0.5, -0.5, 0.5,
-		0.5, -0.5, 0.5,  -0.5, -0.5, 0.5,  -0.5, -0.5, -0.5,
-		// Góra
-		-0.5, 0.5, -0.5,  -0.5, 0.5, 0.5,  0.5, 0.5, 0.5,
-		0.5, 0.5, 0.5,  0.5, 0.5, -0.5,  -0.5, 0.5, -0.5,
+		-0.5f, -0.5f, -0.5f, // Wierzcho³ek 0
+		 0.5f, -0.5f, -0.5f, // Wierzcho³ek 1
+		 0.5f,  0.5f, -0.5f, // Wierzcho³ek 2
+		-0.5f,  0.5f, -0.5f, // Wierzcho³ek 3
+		-0.5f, -0.5f,  0.5f, // Wierzcho³ek 4
+		 0.5f, -0.5f,  0.5f, // Wierzcho³ek 5
+		 0.5f,  0.5f,  0.5f, // Wierzcho³ek 6
+		-0.5f,  0.5f,  0.5f  // Wierzcho³ek 7
 	};
 
 	indices = {
-		// Front face
-		0, 1, 2, 2, 3, 0,
-		// Top face
-		1, 5, 6, 6, 2, 1,
-		// Back face
-		7, 6, 5, 5, 4, 7,
-		// Bottom face
-		4, 0, 3, 3, 7, 4,
-		// Left face
-		4, 5, 1, 1, 0, 4,
-		// Right face
-		3, 2, 6, 6, 7, 3
+		0, 1, 2, 2, 3, 0, // Przednia œciana
+		1, 5, 6, 6, 2, 1, // Prawa œciana
+		7, 6, 5, 5, 4, 7, // Tylna œciana
+		4, 0, 3, 3, 7, 4, // Lewa œciana
+		4, 5, 1, 1, 0, 4, // Dolna œciana
+		3, 2, 6, 6, 7, 3  // Górna œciana
 	};
 
 }
@@ -48,9 +32,7 @@ Cube::Cube(const IWindow& window) : _window(window){
 
 Cube::~Cube()
 {
-	glDeleteVertexArrays(1, &bufferObject.VAO);
-	glDeleteBuffers(1, &bufferObject.VBO);
-	glDeleteBuffers(1, &bufferObject.EBO);
+	bufferObjectController.deleteBuffers();
 
 	shader.deleteProgram();
 }
@@ -60,42 +42,23 @@ void Cube::init()
 
 	compileShaderCube();
 
-	glGenVertexArrays(1, &bufferObject.VAO);
-	glGenBuffers(1, &bufferObject.VBO);
-	glGenBuffers(1, &bufferObject.EBO);
+	bufferObjectController.generateBuffers();
 	
-	glBindVertexArray(bufferObject.VAO);
+	bufferObjectController.bindVAO();
 	
-	glBindBuffer(GL_ARRAY_BUFFER, bufferObject.VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+	bufferObjectController.bindVBO(vertices.size() * sizeof(float), &vertices[0]);
+	bufferObjectController.bindEBO(indices.size() * sizeof(unsigned int), &indices[0]);
+	bufferObjectController.enableVertexAttribPointer(0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferObject.EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	bufferObjectController.unbindVAO();
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-
-	glBindVertexArray(0);
+	mvpInit();
 
 	
-
-	// MVP stuff doing
-	/*model = glm::mat4(1.0f);
-	view = glm::mat4(1.0f);
-	projection = glm::mat4(1.0f);
-	mvp = glm::mat4(1.0f);
-
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	view = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	projection = glm::perspective(glm::radians(45.0f), static_cast<float>(window.getWindowWidth()) / static_cast<float>(window.getWindowHeight()), 0.1f, 100.f);
-
-	mvp = projection * view * model;*/
-
-
-
-	std::cout << _window.getWidth() << "\n";
-	std::cout << _window.getHeight() << "\n";
+	// Camera vec3
+	cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+	cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+	cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 
 }
@@ -104,9 +67,13 @@ void Cube::render()
 {
 	shader.use();
 
-	glBindVertexArray(bufferObject.VAO);
+	processInput();
+
+	mvp.setMat4(shader.getShaderID(), "mvp");
+
+	bufferObjectController.bindVAO();
 	glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+	bufferObjectController.unbindVAO();
 
 }
 
@@ -119,4 +86,39 @@ void Cube::compileShaderCube()
 
 	shader.compileShaderFromFile(shaderFile);
 }
+
+void Cube::mvpInit()
+{
+	mvp.init();
+
+	mvp.model = glm::translate(mvp.model, glm::vec3(0.0f, 2.0f, -3.0f));
+	mvp.view = glm::rotate(mvp.model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	mvp.projection = glm::perspective(glm::radians(45.0f), static_cast<float>(_window.getWidth()) / static_cast<float>(_window.getHeight()), 0.1f, 100.f);
+
+	mvp.modelViewProjection = mvp.projection * mvp.view * mvp.model;
+}
+
+void Cube::processInput(){
+
+	const float cameraSpeed = 0.05f;
+
+	if (glfwGetKey(_window.getWindow(), GLFW_KEY_W) == GLFW_PRESS) {
+		cameraPos += cameraSpeed * cameraFront;
+	}
+	if (glfwGetKey(_window.getWindow(), GLFW_KEY_S) == GLFW_PRESS) {
+		cameraPos -= cameraSpeed * cameraFront;
+	}
+	if (glfwGetKey(_window.getWindow(), GLFW_KEY_A) == GLFW_PRESS) {
+		cameraPos -= cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+	}
+
+	if (glfwGetKey(_window.getWindow(), GLFW_KEY_D) == GLFW_PRESS) {
+		cameraPos += cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+	}
+	
+	mvp.view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	mvp.modelViewProjection = mvp.projection * mvp.view * mvp.model;
+}
+
+
 

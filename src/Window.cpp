@@ -67,6 +67,13 @@ void Window::destroyWindow()
 	glfwDestroyWindow(window);
 }
 
+GLFWwindow* Window::getWindow() const
+{
+	return this->window;
+}
+
+
+
 int Window::getWidth() const
 {
 	return _width;
