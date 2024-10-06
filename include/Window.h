@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 
 #include "IWindow.h"
+#include "MouseController.h"
 
 #include <memory>
 
@@ -25,6 +26,9 @@ public:
 	void makeContextCurrentFrame();
 	void setFrameBufferSizeCallback();
 
+	void setCursorHidden();
+	void setCursorPositionCallback();
+
 	int windowShouldClose();
 
 	void swapBuffers();
@@ -35,7 +39,7 @@ private:
 	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 	GLFWwindow* window{ nullptr };
-	
+
 	int _width;
 	int _height;
 	

@@ -20,6 +20,11 @@ void BuffersObjectController::bindVAO()
 	glBindVertexArray(bufferUnit.VAO);
 }
 
+void BuffersObjectController::unbindVBO()
+{
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void BuffersObjectController::unbindVAO()
 {
 	glBindVertexArray(0);
@@ -37,9 +42,13 @@ void BuffersObjectController::bindEBO(GLsizeiptr size, const void* data)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
 
+void BuffersObjectController::setVertexAttribPointer(GLuint index, GLint size, GLsizei stride, int steps)
+{
+	glVertexAttribPointer(index, size, GL_FLOAT, GL_FALSE, stride * sizeof(float), (void*)(steps * sizeof(float)));
+}
+
 void BuffersObjectController::enableVertexAttribPointer(GLuint index)
 {
-	glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(index);
 }
 

@@ -4,9 +4,11 @@
 #include "Shader.h"
 #include "BuffersObjectController.h"
 #include "MVP.h"
-#include "Window.h"
+#include "Camera.h"
+#include "Texture.h"
 
 #include <vector>
+#include <memory>
 
 
 class Cube : public RenderObject {
@@ -19,23 +21,19 @@ public:
 	 void init() override;
 	 void render() override;
 
+	 MVP& getMVP() override;
+
 private:
 	void compileShaderCube();
-	void processInput();
-	
-	void mvpInit();
 
 	Shader shader;
 	BuffersObjectController bufferObjectController;
 	MVP mvp;
+	
+	Texture texture;
 
 	std::vector<GLfloat> vertices{ 0 };
 	std::vector<GLuint> indices{ 0 };
-
-	glm::vec3 cameraPos{ 0 };
-	glm::vec3 cameraFront{ 0 };
-	glm::vec3 cameraUp{ 0 };
-
 
 	const IWindow& _window;
 	

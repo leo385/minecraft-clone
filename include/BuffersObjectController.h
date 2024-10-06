@@ -14,11 +14,13 @@ public:
 	void deleteBuffers();
 	
 	void bindVAO();
-	void unbindVAO();
-
 	void bindVBO(GLsizeiptr size, const void* data);
 	void bindEBO(GLsizeiptr size, const void* data);
 
+	void unbindVBO();
+	void unbindVAO();
+
+	void setVertexAttribPointer(GLuint index, GLint size, GLsizei stride, int steps);
 	void enableVertexAttribPointer(GLuint index);
 
 	GLuint getVAO();

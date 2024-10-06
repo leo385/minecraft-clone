@@ -42,7 +42,7 @@ void Window::makeContextCurrentFrame()
 void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
-	std::cout << window << "\n";
+	window = nullptr;
 }
 
 void Window::setFrameBufferSizeCallback()
@@ -50,7 +50,15 @@ void Window::setFrameBufferSizeCallback()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 }
 
+void Window::setCursorHidden()
+{
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
 
+void Window::setCursorPositionCallback()
+{
+	glfwSetCursorPosCallback(window, MouseController::mouse_callback);
+}
 
 int Window::windowShouldClose()
 {
@@ -71,8 +79,6 @@ GLFWwindow* Window::getWindow() const
 {
 	return this->window;
 }
-
-
 
 int Window::getWidth() const
 {

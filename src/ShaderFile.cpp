@@ -4,9 +4,6 @@
 #include <sstream>
 #include <iostream>
 
-
-
-
 void ShaderFile::openShaderFile(const char* vertexPathFile, const char* fragmentPathFile)
 {
 	std::ifstream vShaderFile;
