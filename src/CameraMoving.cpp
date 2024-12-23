@@ -1,38 +1,49 @@
 #include "CameraMoving.h"
 #include "MouseCoords.h"
 
+#include <GLFW/glfw3.h>
+
 CameraMoving::CameraMoving()
 {
-	// Mouse that has moved first time
-	firstMouse = true;
-
-	lastX = 400.0f;
-	lastY = 300.0f;
-
 	yaw = -90.0f;
 	pitch = 0.0f;
 
-	sensitivity = 0.1f;
+	sensitivity = 0.10f;
 }
 
-void CameraMoving::moveCameraWithMouse(Camera& camera)
-{
-	float xpos = static_cast<float>(MouseCoords::xpos);
-	float ypos = static_cast<float>(MouseCoords::ypos);
 
+void CameraMoving::moveCameraWithMouse(const IWindow& window, Camera& camera)
+{
+	
+	static bool firstMouse = true;
+
+	static float xpos = 960.0f;
+	static float ypos = 540.0f;
+
+	bool isWindowFocused = window.getFocused();
+
+	double currentX, currentY;
+	glfwGetCursorPos(window.getWindow(), &currentX, &currentY);
+
+	if (!isWindowFocused) {
+
+		firstMouse = true;
+	}
+	
 	if (firstMouse) {
 
-		lastX = xpos;
-		lastY = ypos;
+		xpos = static_cast<float>(currentX);
+		ypos = static_cast<float>(currentY);
 
 		firstMouse = false;
+
 	}
 
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos;
+	float xoffset = static_cast<float>(currentX) - xpos;
+	float yoffset = ypos - static_cast<float>(currentY);
 
-	lastX = xpos;
-	lastY = ypos;
+	xpos = static_cast<float>(currentX); // Zaktualizuj pozycjê X
+	ypos = static_cast<float>(currentY); // Zaktualizuj pozycjê Y
 
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
@@ -51,5 +62,8 @@ void CameraMoving::moveCameraWithMouse(Camera& camera)
 	direction.y = sin(glm::radians(pitch));
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 
+
 	camera.setDirection(glm::normalize(direction));
+
+	
 }

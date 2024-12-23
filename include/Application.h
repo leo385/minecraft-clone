@@ -1,14 +1,18 @@
 #pragma once
 
-#include <GL\glew.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <Shader.h>
+#include "Window.h"
+
+#include "Scene.h"
+
+#include <memory>
+
 
 class Application {
 
 public:
-
 	Application();
 	~Application();
 
@@ -20,7 +24,6 @@ private:
 	void MainLoop();
 	void Render();
 	
-
-	GLFWwindow* window;
-	
+	std::unique_ptr<Window> window;
+	std::unique_ptr<Scene> scene;
 };

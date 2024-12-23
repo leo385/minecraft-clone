@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "Time.h"
+#include "Time_utils.h"
 
 #include <iostream>
 
@@ -8,12 +8,11 @@ void Camera::init()
 	cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 	cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
 }
 
 void Camera::handleInput(const IWindow& _window)
 {
-	float cameraSpeed = 2.5f * Time::getDeltaTime();
+	float cameraSpeed = 2.5f * Time_utils::getDeltaTime();
 
 	//std::cout << Time::getDeltaTime() << "\n";
 
@@ -29,6 +28,13 @@ void Camera::handleInput(const IWindow& _window)
 	if (glfwGetKey(_window.getWindow(), GLFW_KEY_D) == GLFW_PRESS) {
 		cameraPos += cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
 	}
+	if (glfwGetKey(_window.getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS) {
+		cameraPos.y += cameraSpeed;
+	}
+	if (glfwGetKey(_window.getWindow(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
+		cameraPos.y -= cameraSpeed;
+	}
+
 }
 
 void Camera::setDirection(const glm::vec3& direction)
@@ -50,9 +56,4 @@ glm::vec3 Camera::getCameraFront() const
 glm::vec3 Camera::getCameraUp() const
 {
 	return cameraUp;
-}
-
-const Camera& Camera::getObject() const
-{
-	return *this;
 }

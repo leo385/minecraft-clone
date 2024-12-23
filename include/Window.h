@@ -5,7 +5,6 @@
 #include "IWindow.h"
 #include "MouseController.h"
 
-#include <memory>
 
 class Window : public IWindow{
 
@@ -13,11 +12,12 @@ public:
 	Window() = default;
 	~Window();
 
-	// IWindow methods
-	int getWidth() const override;
-	int getHeight() const override;
+	inline int getWidth() const override;
+	inline int getHeight() const override;
+	
+	bool getFocused() const override;
 
-	GLFWwindow* getWindow() const override;
+	inline GLFWwindow* getWindow() const override;
 
 	bool initialize();
 
@@ -26,7 +26,12 @@ public:
 	void makeContextCurrentFrame();
 	void setFrameBufferSizeCallback();
 
-	void setCursorHidden();
+	void setWindowFocusAttrib();
+
+	static void setFocusedOnWindow(GLFWwindow* window, int focused);
+	void setWindowFocusCallback();
+
+	void setCursorDisabled();
 	void setCursorPositionCallback();
 
 	int windowShouldClose();
@@ -42,5 +47,7 @@ private:
 
 	int _width;
 	int _height;
+
+    static bool _focused;
 	
 };

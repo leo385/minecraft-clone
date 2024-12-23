@@ -41,7 +41,20 @@ void Window::makeContextCurrentFrame()
 
 void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-	glViewport(0, 0, width, height);
+	int viewportwidth, viewportheight;
+	float aspectratio = 16.0f / 9.0f;
+
+	if (width / static_cast<float>(height) > aspectratio) {
+		viewportwidth = static_cast<int>(height * aspectratio);
+		viewportheight = height;
+	}
+	else {
+		viewportwidth = width;
+		viewportheight = static_cast<int>(width / aspectratio);
+	}
+
+	glViewport((width - viewportwidth) / 2, (height - viewportheight) / 2, viewportwidth, viewportheight);
+
 	window = nullptr;
 }
 
@@ -50,7 +63,25 @@ void Window::setFrameBufferSizeCallback()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 }
 
-void Window::setCursorHidden()
+
+bool Window::_focused = false;
+
+void Window::setFocusedOnWindow(GLFWwindow* window, int focused)
+{
+	_focused = focused;
+}
+
+void Window::setWindowFocusAttrib()
+{
+	_focused = glfwGetWindowAttrib(window, GLFW_FOCUSED);
+}
+
+void Window::setWindowFocusCallback()
+{
+	glfwSetWindowFocusCallback(window, setFocusedOnWindow);
+}
+
+void Window::setCursorDisabled()
 {
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
@@ -59,6 +90,7 @@ void Window::setCursorPositionCallback()
 {
 	glfwSetCursorPosCallback(window, MouseController::mouse_callback);
 }
+
 
 int Window::windowShouldClose()
 {
@@ -75,21 +107,25 @@ void Window::destroyWindow()
 	glfwDestroyWindow(window);
 }
 
-GLFWwindow* Window::getWindow() const
+inline GLFWwindow* Window::getWindow() const
 {
 	return this->window;
 }
 
-int Window::getWidth() const
+inline int Window::getWidth() const
 {
 	return _width;
 }
 
-int Window::getHeight() const
+inline int Window::getHeight() const
 {
 	return _height;
 }
 
+bool Window::getFocused() const
+{
+	return _focused;
+}
 
 
 

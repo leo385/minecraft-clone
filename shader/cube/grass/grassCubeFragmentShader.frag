@@ -9,7 +9,7 @@ uniform sampler2D texture1;
 uniform sampler2D texture2;
 
 void main() {
-	 
+
     // Front wall
     if(FragPos.z >= 0.5){
         FragColor = texture(texture0, TexCoord);
@@ -39,6 +39,5 @@ void main() {
     if(FragPos.y >= 0.5){
         FragColor = texture(texture1, TexCoord);
     }
-    
 
 };

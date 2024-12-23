@@ -5,8 +5,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Window.h"
-#include "MVP.h"
-
 
 class Camera
 {
@@ -26,6 +24,5 @@ public:
 	glm::vec3 getCameraFront() const;
 	glm::vec3 getCameraUp() const;
 
-	const Camera& getObject() const;
 };
 

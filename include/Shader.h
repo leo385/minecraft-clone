@@ -11,9 +11,9 @@ public:
 	Shader() = default;
 	~Shader() {}
 
-	void use();
-	void compileShaderFromFile(ShaderFile& shaderFile);
-	void deleteProgram();
+	void use(const unsigned int& programID);
+	void compileShaderFromFile(ShaderFile& shaderFile, unsigned int& programID);
+	void deleteProgram(const unsigned int& programID);
 
 	unsigned int getShaderID();
 

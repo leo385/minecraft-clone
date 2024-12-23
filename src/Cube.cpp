@@ -5,13 +5,17 @@
 
 #include <iostream>
 
-Cube::Cube(const IWindow& window) : _window(window){
 
+Cube::Cube(std::unique_ptr<RenderComponent> renderComponent, MvpComponent* mvpComponent, std::unique_ptr<TextureComponent> textureComponent,
+       std::unique_ptr<ShaderComponent> shaderComponent, std::unique_ptr<BufferComponent> bufferComponent) 
+        : renderComponent(std::move(renderComponent)), mvpComponent(std::move(mvpComponent)), textureComponent(std::move(textureComponent)),
+          shaderComponent(std::move(shaderComponent)), bufferComponent(std::move(bufferComponent))
+{
 	// Przesuniêcie, ¿eby zapobiec nak³adaniu siê tekstur z kolorem obiektu.
 	float offset = 0.0001f;
 
 	vertices = {
-		// Pozycje          // Tekstury
+	// Pozycje					   // Tekstury
 	// Przednia œciana
 	-0.5f, -0.5f,  0.5f + offset,  1.0f, 1.0f,  // Lewy dolny
 	 0.5f, -0.5f,  0.5f + offset,  0.0f, 1.0f,  // Prawy dolny
@@ -78,92 +82,34 @@ Cube::Cube(const IWindow& window) : _window(window){
 
 }
 
-
-Cube::~Cube()
-{
-	bufferObjectController.deleteBuffers();
-	shader.deleteProgram();
-}
-
 void Cube::init()
-{
+{ 
+	  // shader component
+	  shaderComponent->compileShaderFromFile("cubeVertexShader.vert", "cubeFragmentShader.frag");
 
-	compileShaderCube();
+	  // buffer component
+	  bufferComponent->bindBuffers(vertices, indices);
+	  bufferComponent->setAttribPointer();
+	  bufferComponent->unbindBuffers();
 
-	bufferObjectController.generateBuffers();
+	  textureComponent->applyTexture();
 
-	GLuint textureID[3];
 
-	// init front texture
-	texture.init(&textureID[0], GL_TEXTURE0);
-	texture.setTextureParameter(GL_CLAMP_TO_BORDER, GL_NEAREST, GL_LINEAR_MIPMAP_LINEAR);
-	texture.loadTextureIntoGL("assets/cube/cube_grass_normal.png");
-
-	// init top texture
-	texture.init(&textureID[1], GL_TEXTURE1);
-	texture.setTextureParameter(GL_CLAMP_TO_BORDER, GL_NEAREST, GL_LINEAR_MIPMAP_LINEAR);
-	texture.loadTextureIntoGL("assets/cube/cube_grass_top.png");
-
-	// init bottom texture
-	texture.init(&textureID[2], GL_TEXTURE2);
-	texture.setTextureParameter(GL_CLAMP_TO_BORDER, GL_NEAREST, GL_LINEAR_MIPMAP_LINEAR);
-	texture.loadTextureIntoGL("assets/cube/cube_grass_bottom.png");
-
-	bufferObjectController.bindVAO();
-	
-	bufferObjectController.bindVBO(vertices.size() * sizeof(float), &vertices[0]);
-	bufferObjectController.bindEBO(indices.size() * sizeof(unsigned int), &indices[0]);
-
-	// vertices
-	bufferObjectController.setVertexAttribPointer(0, 3, 5, 0);
-	bufferObjectController.enableVertexAttribPointer(0);
-
-	// tex uv coords
-	bufferObjectController.setVertexAttribPointer(1, 2, 5, 3);
-	bufferObjectController.enableVertexAttribPointer(1);
-
-	bufferObjectController.unbindVBO();
-	bufferObjectController.unbindVAO();
-
-	mvp.init();
-
-	mvp.model = glm::translate(mvp.model, glm::vec3(0.0f, 0.0f, -3.0f));
-	mvp.view = glm::rotate(mvp.model, glm::radians(-55.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-	mvp.projection = glm::perspective(glm::radians(60.0f), static_cast<float>(_window.getWidth()) / static_cast<float>(_window.getHeight()), 0.1f, 100.f);
-
-	mvp.modelViewProjection = mvp.projection * mvp.view * mvp.model;
-
+	  // set model for mvp
+	  mvpComponent->setModel(glm::vec3(0.0f, 0.0f, -3.0f));
 }
 
 void Cube::render()
 {
-	shader.use();
+	  // shader component
+	  shaderComponent->useShaderProgram();
 
-	texture.sendTextureToShader(shader.getShaderID(), "texture0", 0);
-	texture.sendTextureToShader(shader.getShaderID(), "texture1", 1);
-	texture.sendTextureToShader(shader.getShaderID(), "texture2", 2);
-
-	mvp.setMat4(shader.getShaderID(), "mvp");
-
-	
-	bufferObjectController.bindVAO();
-	glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0);
-	bufferObjectController.unbindVAO();
-
-}
-
-void Cube::compileShaderCube()
-{
-	ShaderFile shaderFile;
-
-	shaderFile.openShaderFile("C:/Users/Leonard/Desktop/Projekty/Game/1/shader/cubeVertexShader.vert",
-		"C:/Users/Leonard/Desktop/Projekty/Game/1/shader/cubeFragmentShader.frag");
-
-	shader.compileShaderFromFile(shaderFile);
-}
-
-
-MVP& Cube::getMVP()
-{
-	return mvp;
+	  mvpComponent->sendToShader(shaderComponent->getProgramID(), "mvp");
+	  
+	  // Render component
+	  bufferComponent->bindVAO();
+	  renderComponent->render(indices);
+	  bufferComponent->unbindVAO();
+	 
+	  textureComponent->sendToShader(shaderComponent->getProgramID());
 }
