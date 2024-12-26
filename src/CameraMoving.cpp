@@ -42,8 +42,8 @@ void CameraMoving::moveCameraWithMouse(const IWindow& window, Camera& camera)
 	float xoffset = static_cast<float>(currentX) - xpos;
 	float yoffset = ypos - static_cast<float>(currentY);
 
-	xpos = static_cast<float>(currentX); // Zaktualizuj pozycjê X
-	ypos = static_cast<float>(currentY); // Zaktualizuj pozycjê Y
+	xpos = static_cast<float>(currentX);
+	ypos = static_cast<float>(currentY);
 
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;

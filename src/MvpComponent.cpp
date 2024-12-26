@@ -6,7 +6,7 @@ void MvpComponent::setMvpMatrix(){
   
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f));
     view = glm::rotate(model, glm::radians(-55.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-    projection = glm::perspective(glm::radians(60.0f), 800.0f / 600.f, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(60.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
 }
 
 void MvpComponent::setViewFromCamera(const glm::vec3 &source, const glm::vec3 &destination, const glm::vec3 &UpDirection){

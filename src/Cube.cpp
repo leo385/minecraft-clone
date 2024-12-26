@@ -82,15 +82,33 @@ Cube::Cube(std::unique_ptr<RenderComponent> renderComponent, MvpComponent* mvpCo
 
 }
 
+Cube::~Cube()
+{
+	bufferComponent->deleteVBO(vbo);
+	bufferComponent->deleteEBO();
+}
+
 void Cube::init()
 { 
 	  // shader component
 	  shaderComponent->compileShaderFromFile("cubeVertexShader.vert", "cubeFragmentShader.frag");
 
-	  // buffer component
-	  bufferComponent->bindBuffers(vertices, indices);
-	  bufferComponent->setAttribPointer();
-	  bufferComponent->unbindBuffers();
+	  // generate buffers
+	  bufferComponent->generateVBO(vbo);
+	  bufferComponent->generateEBO();
+
+	  // bind buffer component
+	  bufferComponent->bindVBO(vertices, vbo);
+	  bufferComponent->bindEBO(indices);
+	  
+	  // vertex position
+	  bufferComponent->setAttribPointer(0, 3, 5, 0);
+
+	  // tex uv coords
+	  bufferComponent->setAttribPointer(1, 2, 5, 3);
+
+	  // unbind VBO, EBO
+	  bufferComponent->unbindVBO();
 
 	  textureComponent->applyTexture();
 
@@ -99,17 +117,13 @@ void Cube::init()
 	  mvpComponent->setModel(glm::vec3(0.0f, 0.0f, -3.0f));
 }
 
-void Cube::render()
+
+void Cube::sendToShader()
 {
 	  // shader component
 	  shaderComponent->useShaderProgram();
 
 	  mvpComponent->sendToShader(shaderComponent->getProgramID(), "mvp");
-	  
-	  // Render component
-	  bufferComponent->bindVAO();
-	  renderComponent->render(indices);
-	  bufferComponent->unbindVAO();
-	 
-	  textureComponent->sendToShader(shaderComponent->getProgramID());
+
+      textureComponent->sendToShader(shaderComponent->getProgramID());
 }

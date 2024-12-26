@@ -2,6 +2,19 @@
 
 #include <iostream>
 
+
+Scene::Scene(const IWindow& window) : window(window){
+
+	camera = std::make_unique<Camera>();
+	mvpComponent = new MvpComponent();
+
+	cubeRender = std::make_unique<CubeRenderComponent>();
+	cubeGrassTexture = std::make_unique<GrassTextureComponent>();
+	cubeShader = std::make_unique<ShaderComponent>();
+	cubeBuffer = std::make_unique<BufferComponent>();
+
+}
+
 Scene::~Scene()
 {
 	if (!mvpComponent)
@@ -11,16 +24,8 @@ Scene::~Scene()
 
 void Scene::init()
 {
-	camera = std::make_unique<Camera>();
-	camera->init();
-  
-	cubeRender = std::make_unique<CubeRenderComponent>();
-	cubeGrassTexture = std::make_unique<GrassTextureComponent>();
-	cubeShader = std::make_unique<ShaderComponent>();
-	cubeBuffer = std::make_unique<BufferComponent>();
-
 	
-	mvpComponent = new MvpComponent();
+	camera->init();
 
 	// set global view rotate mvp
 	mvpComponent->setViewRotate(-55.0f, glm::vec3(0.0f, 0.0f, 0.0f));
@@ -30,20 +35,19 @@ void Scene::init()
 
 	setViewCamera();
 	
-	cubeMesh = std::make_shared<Cube>(std::move(cubeRender), std::move(mvpComponent), std::move(cubeGrassTexture), std::move(cubeShader), std::move(cubeBuffer));
+	cubeMesh = std::make_unique<Cube>(std::move(cubeRender), std::move(mvpComponent), std::move(cubeGrassTexture), std::move(cubeShader), std::move(cubeBuffer));
+	cubeBoard = std::make_unique<CubeBoard>(*cubeMesh, std::move(cubeBuffer));
 
-	cubeMesh->init();
+	cubeBoard->init();
 
 }
 
 void Scene::render()
 {
-	cubeMesh->render();
+	cubeBoard->render();
 
 	/* Camera Free look */
 	cameraMoving.moveCameraWithMouse(window, *camera);
-  	//cameraMoving.moveCameraWithArrows(window, *camera);
-
 	setViewCamera();
 }
 

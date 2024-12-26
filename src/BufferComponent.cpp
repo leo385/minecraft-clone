@@ -1,47 +1,68 @@
 #include "BufferComponent.h"
 
-BufferComponent::BufferComponent(){
-
-    bufferObject.generateBuffers();
-}
 
 BufferComponent::~BufferComponent(){
 
-    bufferObject.deleteBuffers();
 }
 
+void BufferComponent::generateVAO(GLuint& vao)
+{
+    bufferObject.generateVAO(vao);
+}
 
-void BufferComponent::bindBuffers(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices){
+void BufferComponent::generateVBO(GLuint& vbo)
+{
+    bufferObject.generateVBO(vbo);
+}
 
-    bufferObject.bindVAO();
-    
-    bufferObject.bindVBO(vertices.size() * sizeof(float), &vertices[0]);
+void BufferComponent::generateEBO()
+{
+    bufferObject.generateEBO();
+}
+
+void BufferComponent::deleteVAO(GLuint& vao)
+{
+    bufferObject.deleteVAO(vao);
+}
+
+void BufferComponent::deleteVBO(GLuint& vbo)
+{
+    bufferObject.deleteVBO(vbo);
+}
+
+void BufferComponent::deleteEBO()
+{
+    bufferObject.deleteEBO();
+}
+
+void BufferComponent::bindEBO(const std::vector<GLuint>& indices)
+{
     bufferObject.bindEBO(indices.size() * sizeof(unsigned int), &indices[0]);
-
-}
-
-void BufferComponent::setAttribPointer(){
-
-    // vertex position
-    bufferObject.setVertexAttribPointer(0, 3, 5, 0);
-    bufferObject.enableVertexAttribPointer(0);
-
-    // tex uv coords
-    bufferObject.setVertexAttribPointer(1, 2, 5, 3);
-    bufferObject.enableVertexAttribPointer(1);
-
 }
 
 
-void BufferComponent::unbindBuffers(){
+void BufferComponent::setAttribPointer(GLuint index, GLint size, GLsizei stride, int steps){
+
+    bufferObject.setVertexAttribPointer(index, size, stride, steps);
+    bufferObject.enableVertexAttribPointer(index);
+
+}
+
+void BufferComponent::setAttribDivisor(GLuint index, GLuint divisor)
+{
+    bufferObject.setVertexAttribDivisor(index, divisor);
+}
+
+
+void BufferComponent::unbindVBO(){
 
     bufferObject.unbindVBO();
-    bufferObject.unbindVAO();
 
 }
 
-void BufferComponent::bindVAO(){
-    bufferObject.bindVAO();
+
+void BufferComponent::bindVAO(GLuint& vao){
+    bufferObject.bindVAO(vao);
 }
 
 void BufferComponent::unbindVAO(){

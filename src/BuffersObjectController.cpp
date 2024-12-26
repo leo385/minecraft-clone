@@ -1,23 +1,34 @@
 #include "BuffersObjectController.h"
 
 
-void BuffersObjectController::generateBuffers()
+void BuffersObjectController::generateVAO(GLuint& vao)
 {
-	glGenVertexArrays(1, &bufferUnit.VAO);
-	glGenBuffers(1, &bufferUnit.VBO);
+	glGenVertexArrays(1, &vao);
+}
+
+void BuffersObjectController::generateVBO(GLuint& vbo)
+{
+	glGenBuffers(1, &vbo);
+}
+
+void BuffersObjectController::generateEBO()
+{
 	glGenBuffers(1, &bufferUnit.EBO);
 }
 
-void BuffersObjectController::deleteBuffers()
+void BuffersObjectController::deleteVAO(GLuint& vao)
 {
-	glDeleteVertexArrays(1, &bufferUnit.VAO);
-	glDeleteBuffers(1, &bufferUnit.VBO);
-	glDeleteBuffers(1, &bufferUnit.EBO);
+	glDeleteVertexArrays(1, &vao);
 }
 
-void BuffersObjectController::bindVAO()
+void BuffersObjectController::deleteVBO(GLuint& vbo)
 {
-	glBindVertexArray(bufferUnit.VAO);
+	glDeleteBuffers(1, &vbo);
+}
+
+void BuffersObjectController::deleteEBO()
+{
+	glDeleteBuffers(1, &bufferUnit.EBO);
 }
 
 void BuffersObjectController::unbindVBO()
@@ -30,9 +41,14 @@ void BuffersObjectController::unbindVAO()
 	glBindVertexArray(0);
 }
 
-void BuffersObjectController::bindVBO(GLsizeiptr size, const void* data)
+void BuffersObjectController::bindVAO(GLuint& vao)
 {
-	glBindBuffer(GL_ARRAY_BUFFER, bufferUnit.VBO);
+	glBindVertexArray(vao);
+}
+
+void BuffersObjectController::bindVBO(GLuint& vbo, GLsizeiptr size, const void* data)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
 
@@ -47,22 +63,27 @@ void BuffersObjectController::setVertexAttribPointer(GLuint index, GLint size, G
 	glVertexAttribPointer(index, size, GL_FLOAT, GL_FALSE, stride * sizeof(float), (void*)(steps * sizeof(float)));
 }
 
+void BuffersObjectController::setVertexAttribDivisor(GLuint index, GLuint divisor)
+{
+	glVertexAttribDivisor(index, divisor);
+}
+
 void BuffersObjectController::enableVertexAttribPointer(GLuint index)
 {
 	glEnableVertexAttribArray(index);
 }
 
-GLuint BuffersObjectController::getVAO()
+GLuint BuffersObjectController::getVAO() const
 {
 	return bufferUnit.VAO;
 }
 
-GLuint BuffersObjectController::getVBO()
+GLuint BuffersObjectController::getVBO() const
 {
 	return bufferUnit.VBO;
 }
 
-GLuint BuffersObjectController::getEBO()
+GLuint BuffersObjectController::getEBO() const
 {
 	return bufferUnit.EBO;
 }
