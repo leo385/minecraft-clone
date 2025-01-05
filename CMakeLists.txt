@@ -6,8 +6,6 @@ project(MinecraftClone VERSION 1.0)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-#set(CMAKE_C_COMPILER clang)
-#set(CMAKE_CXX_COMPILER clang++)
 
 # Flagi dla clanga
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -25,7 +23,7 @@ endif()
 set(GLFW_DIR ${CMAKE_SOURCE_DIR}/libs/glfw)
 set(GLEW_DIR ${CMAKE_SOURCE_DIR}/libs/glew)
 set(GLM_DIR ${CMAKE_SOURCE_DIR}/libs)
-
+set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/libs/imgui)
 
 # Find opengl WIN
 find_package(OpenGL REQUIRED)
@@ -38,7 +36,6 @@ else()
 endif()
 
 # Add glfw
-
 add_library(glfw STATIC IMPORTED)
 
 if(MSVC)
@@ -66,10 +63,20 @@ add_library(glm INTERFACE)
 target_include_directories(glm INTERFACE ${GLM_DIR})
 
 # Include files
-include_directories(include ${GLEW_DIR}/include ${GLFW_DIR}/include)
+include_directories(include ${GLEW_DIR}/include ${GLFW_DIR}/include ${IMGUI_DIR} ${IMGUI_DIR}/backends)
+
 
 # Zdefiniuj pliki źródłowe
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES "src/*.cpp"
+
+    # IMGUI SOURCE FILES
+    "libs/imgui/imgui.cpp"
+    "libs/imgui/imgui_draw.cpp"
+    "libs/imgui/imgui_widgets.cpp"
+    "libs/imgui/imgui_tables.cpp"
+    "libs/imgui/backends/imgui_impl_glfw.cpp"
+    "libs/imgui/backends/imgui_impl_opengl3.cpp"
+)
 
 # Tworzenie wykonywalnego pliku
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -86,4 +93,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 # Create relative variables path to assets, shaders
 add_definitions(-DASSETS_PATH="${CMAKE_SOURCE_DIR}/assets")
 add_definitions(-DSHADERS_PATH="${CMAKE_SOURCE_DIR}/shader")
+
+add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLEW)
 

@@ -1,6 +1,11 @@
 #include "Application.h"
 #include <iostream>
 
+#include "imgui/imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
+
 Application::Application() {
 
 	window = std::make_unique<Window>();
@@ -9,6 +14,12 @@ Application::Application() {
 Application::~Application() {
 	
 	Terminate();
+}
+
+void Application::Terminate()
+{
+	window->destroyWindow();
+	glfwTerminate();
 }
 
 bool Application::Initialize() {
@@ -52,11 +63,17 @@ void Application::Run()
     std::cout << "Renderer: " << renderer << std::endl;
     std::cout << "OpenGL version supported: " << version << std::endl;
 
+
+	/* Game Scene init */
 	scene = std::make_unique<Scene>(*window);
 	scene->init(); 
 
-	glEnable(GL_DEPTH_TEST);
+	/* ImGui init */
+	gui = std::make_unique<GuiHandler>();
+	gui->init(*window);
 
+
+	glEnable(GL_DEPTH_TEST);
 	MainLoop();
 }
 
@@ -67,10 +84,7 @@ void Application::MainLoop()
 	while (!window->windowShouldClose()) {
 
 		window->setWindowFocusCallback();
-		//window->setCursorPos();
-
 		Render();
-
 	}
 
 }
@@ -80,18 +94,13 @@ void Application::Render()
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
 	scene->handleInput();
 	scene->render();
 
-	
+	gui->render();
+
+
 
 	window->swapBuffers();
 	glfwPollEvents();
-}
-
-void Application::Terminate()
-{
-	window->destroyWindow();
-	glfwTerminate();
 }

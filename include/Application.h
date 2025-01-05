@@ -4,8 +4,8 @@
 #include <GLFW/glfw3.h>
 
 #include "Window.h"
-
 #include "Scene.h"
+#include "GuiHandler.h"
 
 #include <memory>
 
@@ -26,4 +26,6 @@ private:
 	
 	std::unique_ptr<Window> window;
 	std::unique_ptr<Scene> scene;
+	std::unique_ptr<GuiHandler> gui;
+
 };
