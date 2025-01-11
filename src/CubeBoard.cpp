@@ -1,7 +1,7 @@
 #include "CubeBoard.h"
 
 CubeBoard::CubeBoard(Cube& cube, std::unique_ptr<BufferComponent> bufferComponent) 
-	: cube(cube), bufferComponent(std::move(bufferComponent))
+	: cube(cube), bufferComponent(std::move(bufferComponent)), vao(0), vbo(0)
 {
 
 	for (int x = 0; x < 10; x++) {

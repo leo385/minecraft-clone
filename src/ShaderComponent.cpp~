@@ -1,0 +1,33 @@
+#include "ShaderComponent.h"
+
+//#include <filesystem>
+
+
+ShaderComponent::~ShaderComponent(){
+  
+    shader.deleteProgram(programID);
+}
+
+void ShaderComponent::compileShaderFromFile(const char* vertexFile, const char* fragmentFile){
+  
+    ShaderFile shaderFile;
+
+    //shaderFile.openShaderFile(SHADERS_PATH "/cubeVertexShader.vert", SHADERS_PATH "/cubeFragmentShader.frag");
+    //std::string vertexFilePath = SHADERS_PATH vertexFile;
+    //std::filesystem::path vertexFilePath = SHADERS_PATH / std::filesystem::path(vertexFile);
+    //std::string fragmentFilePath = SHADERS_PATH, fragmentFile;
+
+    shaderFile.openShaderFile(vertexFile, fragmentFile);
+
+    shader.compileShaderFromFile(shaderFile, programID);
+}
+
+void ShaderComponent::useShaderProgram(){
+    
+    shader.use(programID);
+}
+
+
+unsigned int& ShaderComponent::getProgramID(){
+	return programID;
+}

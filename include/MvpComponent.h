@@ -4,7 +4,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-class MvpComponent {
+#include "CameraInterface.h"
+
+class MvpComponent : public CameraInterface{
 private:
     glm::mat4 model;
 	glm::mat4 view;
@@ -17,7 +19,7 @@ public:
   
   void setMvpMatrix();
 
-  void setViewFromCamera(const glm::vec3& source, const glm::vec3& destination, const glm::vec3& UpDirection);
+  void setViewFromCamera(const glm::vec3& source, const glm::vec3& destination, const glm::vec3& UpDirection) override;
   void setViewRotate(const float& radians, const glm::vec3& origin);
 
   void setProjection(float aspectRatio);

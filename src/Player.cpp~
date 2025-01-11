@@ -1,7 +1,6 @@
 #include "Camera.h"
 #include "Time_utils.h"
 
-#include <GLFW/glfw3.h>
 #include <iostream>
 
 void Camera::init()
@@ -35,8 +34,6 @@ void Camera::handleInput(const IWindow& _window)
 	if (glfwGetKey(_window.getWindow(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
 		cameraPos.y -= cameraSpeed;
 	}
-
-	
 
 }
 

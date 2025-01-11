@@ -1,10 +1,6 @@
 #include "Application.h"
 #include <iostream>
 
-#include "imgui/imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-
 
 Application::Application() {
 
@@ -72,7 +68,6 @@ void Application::Run()
 	gui = std::make_unique<GuiHandler>();
 	gui->init(*window);
 
-
 	glEnable(GL_DEPTH_TEST);
 	MainLoop();
 }
@@ -94,11 +89,12 @@ void Application::Render()
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	scene->handleInput();
+	scene->update();
 	scene->render();
 
-	gui->render();
 
+	gui->getInfo(&scene->getPlayer());
+	gui->render();
 
 
 	window->swapBuffers();

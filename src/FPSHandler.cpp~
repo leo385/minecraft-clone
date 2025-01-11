@@ -5,10 +5,8 @@
 
 Scene::Scene(const IWindow& window) : window(window){
 
-
+	camera = std::make_unique<Camera>();
 	mvpComponent = new MvpComponent();
-	playerView = std::make_unique<PlayerViewComponent>(*mvpComponent);
-
 
 	cubeRender = std::make_unique<CubeRenderComponent>();
 	cubeGrassTexture = std::make_unique<GrassTextureComponent>();
@@ -27,9 +25,7 @@ Scene::~Scene()
 void Scene::init()
 {
 	
-	// player stuff
-	player = std::make_unique<Player>(std::move(playerView));
-	player->init();
+	camera->init();
 
 	// set global view rotate mvp
 	mvpComponent->setViewRotate(-55.0f, glm::vec3(0.0f, 0.0f, 0.0f));
@@ -37,7 +33,8 @@ void Scene::init()
 	// set global projection mvp
 	mvpComponent->setProjection(static_cast<float>(window.getWidth()) / static_cast<float>(window.getHeight()));
 
-	// cube stuff
+	setViewCamera();
+	
 	cubeMesh = std::make_unique<Cube>(std::move(cubeRender), std::move(mvpComponent), std::move(cubeGrassTexture), std::move(cubeShader), std::move(cubeBuffer));
 	cubeBoard = std::make_unique<CubeBoard>(*cubeMesh, std::move(cubeBuffer));
 
@@ -48,14 +45,18 @@ void Scene::init()
 void Scene::render()
 {
 	cubeBoard->render();
+
+	/* Camera Free look */
+	cameraMoving.moveCameraWithMouse(window, *camera);
+	setViewCamera();
 }
 
-void Scene::update()
+void Scene::handleInput()
 {
-	player->update(window);
+	camera->handleInput(window);
 }
 
-Player& Scene::getPlayer() const
+void Scene::setViewCamera()
 {
-	return *player;
+	mvpComponent->setViewFromCamera(camera->getCameraPos(), camera->getCameraPos() + camera->getCameraFront(), camera->getCameraUp());
 }

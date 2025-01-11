@@ -1,0 +1,16 @@
+#include "CubeBoard.h"
+
+void CubeBoard::init()
+{
+	// Binding cube mesh with VAO, VBO, EBO
+	cube.init();
+
+	// creating vbo for cube board
+
+	
+}
+
+void CubeBoard::render()
+{
+
+}

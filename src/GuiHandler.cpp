@@ -32,11 +32,28 @@ void GuiHandler::render()
 	ImGui::NewFrame();
 
 
-	ImGui::Begin("HiddenWindow", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground);
+	//ImGui::Begin("HiddenWindow", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground);
+	ImGui::SetNextWindowSize(ImVec2(200, 100));
+	ImGui::Begin("Application params");
+
 	ImGui::Text("FPS: %.1f", fpsHandler.calculateFps());
+
+	if (player) {
+
+		ImGui::Text("X: %.2f", player->getPosition().x);
+		ImGui::Text("Y: %.2f", player->getPosition().y);
+		ImGui::Text("Z: %.2f", player->getPosition().z);
+
+	}
+
 	ImGui::End();
 
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void GuiHandler::getInfo(Player* _player)
+{
+	player = _player;
 }
