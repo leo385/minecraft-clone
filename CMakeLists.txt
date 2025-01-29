@@ -39,15 +39,15 @@ endif()
 add_library(glfw STATIC IMPORTED)
 
 if(MSVC)
-	set_target_properties(glfw PROPERTIES
+ 	set_target_properties(glfw PROPERTIES
 	      IMPORTED_LOCATION "${GLFW_DIR}/lib-vc2022/glfw3.lib"
 		    INTERFACE_INCLUDE_DIRECTORIES "${GLFW_DIR}/include"
-	)
+)
 else()
-	set_target_properties(glfw PROPERTIES
-	IMPORTED_LOCATION "${GLFW_DIR}/lib-mingw-w64/libglfw3.a"
-		    INTERFACE_INCLUDE_DIRECTORIES "${GLFW_DIR}/include"
-	)
+set_target_properties(glfw PROPERTIES
+IMPORTED_LOCATION "${GLFW_DIR}/lib-mingw-w64/libglfw3.a"
+        INTERFACE_INCLUDE_DIRECTORIES "${GLFW_DIR}/include"
+)
 endif()
 
 
@@ -82,7 +82,6 @@ file(GLOB SOURCES "src/*.cpp"
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Powiąż biblioteki z projektem
-
 target_link_libraries(${PROJECT_NAME} PRIVATE 
     glew
     glfw

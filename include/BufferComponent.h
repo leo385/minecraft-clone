@@ -14,11 +14,11 @@ class BufferComponent{
   
    void generateVAO(GLuint& vao);
    void generateVBO(GLuint& vbo);
-   void generateEBO();
+   void generateEBO(GLuint& ebo);
 
    void deleteVAO(GLuint& vao);
    void deleteVBO(GLuint& vbo);
-   void deleteEBO();
+   void deleteEBO(GLuint& ebo);
 
    template<typename T>
    void bindVBO(const std::vector<T>& vertices, GLuint& vbo)
@@ -26,12 +26,13 @@ class BufferComponent{
        bufferObject.bindVBO(vbo, vertices.size() * sizeof(float), &vertices[0]);
    }
 
-   void bindEBO(const std::vector<GLuint>& indices);
+   void bindEBO(const std::vector<GLuint>& indices, GLuint& ebo);
  
    void setAttribPointer(GLuint index, GLint size, GLsizei stride, int steps);
    void setAttribDivisor(GLuint index, GLuint divisor);
 
    void unbindVBO();
+   void unbindEBO();
 
    void bindVAO(GLuint& vao);
    void unbindVAO();

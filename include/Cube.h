@@ -18,10 +18,11 @@ public:
 	Cube() = default;
 	Cube(std::unique_ptr<RenderComponent> renderComponent, MvpComponent* mvpComponent, std::unique_ptr<TextureComponent> textureComponent,
         std::unique_ptr<ShaderComponent> shaderComponent, std::unique_ptr<BufferComponent> bufferComponent);
-	~Cube();
 
 	void init();
 	void sendToShader();
+
+	void deleteBuffers();
 
 private:
 	std::unique_ptr<RenderComponent> renderComponent;
@@ -35,4 +36,5 @@ private:
 	std::vector<GLuint> indices{ 0 };
 
 	GLuint vbo;
+	GLuint ebo;
 };

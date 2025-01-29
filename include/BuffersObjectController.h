@@ -12,16 +12,17 @@ public:
 
 	void generateVAO(GLuint& vao);
 	void generateVBO(GLuint& vbo);
-	void generateEBO();
+	void generateEBO(GLuint& ebo);
 
 	void deleteVAO(GLuint& vao);
 	void deleteVBO(GLuint& vbo);
-	void deleteEBO();
+	void deleteEBO(GLuint& ebo);
 	
 	void bindVAO(GLuint& vao);
 	void bindVBO(GLuint& vbo, GLsizeiptr size, const void* data);
-	void bindEBO(GLsizeiptr size, const void* data);
+	void bindEBO(GLuint& ebo, GLsizeiptr size, const void* data);
 
+	void unbindEBO();
 	void unbindVBO();
 	void unbindVAO();
 

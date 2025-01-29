@@ -11,9 +11,9 @@ void BuffersObjectController::generateVBO(GLuint& vbo)
 	glGenBuffers(1, &vbo);
 }
 
-void BuffersObjectController::generateEBO()
+void BuffersObjectController::generateEBO(GLuint& ebo)
 {
-	glGenBuffers(1, &bufferUnit.EBO);
+	glGenBuffers(1, &ebo);
 }
 
 void BuffersObjectController::deleteVAO(GLuint& vao)
@@ -26,9 +26,14 @@ void BuffersObjectController::deleteVBO(GLuint& vbo)
 	glDeleteBuffers(1, &vbo);
 }
 
-void BuffersObjectController::deleteEBO()
+void BuffersObjectController::deleteEBO(GLuint& ebo)
 {
-	glDeleteBuffers(1, &bufferUnit.EBO);
+	glDeleteBuffers(1, &ebo);
+}
+
+void BuffersObjectController::unbindEBO()
+{
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void BuffersObjectController::unbindVBO()
@@ -52,9 +57,9 @@ void BuffersObjectController::bindVBO(GLuint& vbo, GLsizeiptr size, const void* 
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
 
-void BuffersObjectController::bindEBO(GLsizeiptr size, const void* data)
+void BuffersObjectController::bindEBO(GLuint& ebo, GLsizeiptr size, const void* data)
 {
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferUnit.EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
 

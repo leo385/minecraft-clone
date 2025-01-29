@@ -15,9 +15,9 @@ void BufferComponent::generateVBO(GLuint& vbo)
     bufferObject.generateVBO(vbo);
 }
 
-void BufferComponent::generateEBO()
+void BufferComponent::generateEBO(GLuint& ebo)
 {
-    bufferObject.generateEBO();
+    bufferObject.generateEBO(ebo);
 }
 
 void BufferComponent::deleteVAO(GLuint& vao)
@@ -30,14 +30,14 @@ void BufferComponent::deleteVBO(GLuint& vbo)
     bufferObject.deleteVBO(vbo);
 }
 
-void BufferComponent::deleteEBO()
+void BufferComponent::deleteEBO(GLuint& ebo)
 {
-    bufferObject.deleteEBO();
+    bufferObject.deleteEBO(ebo);
 }
 
-void BufferComponent::bindEBO(const std::vector<GLuint>& indices)
+void BufferComponent::bindEBO(const std::vector<GLuint>& indices, GLuint& ebo)
 {
-    bufferObject.bindEBO(indices.size() * sizeof(unsigned int), &indices[0]);
+    bufferObject.bindEBO(ebo, indices.size() * sizeof(unsigned int), &indices[0]);
 }
 
 
@@ -58,6 +58,11 @@ void BufferComponent::unbindVBO(){
 
     bufferObject.unbindVBO();
 
+}
+
+void BufferComponent::unbindEBO()
+{
+    bufferObject.unbindEBO();
 }
 
 

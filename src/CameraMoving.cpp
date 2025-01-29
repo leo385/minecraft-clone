@@ -3,6 +3,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include <iostream>
+
 CameraMoving::CameraMoving()
 {
 	yaw = -90.0f;
@@ -47,6 +49,26 @@ void CameraMoving::moveCameraWithMouse(const IWindow& window, Camera& camera)
 
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
+
+	// For testing on linux
+	if(glfwGetKey(window.getWindow(), GLFW_KEY_RIGHT) == GLFW_PRESS){
+		
+		xoffset += 1.0f;
+	}
+	else if(glfwGetKey(window.getWindow(), GLFW_KEY_LEFT) == GLFW_PRESS){
+		
+		xoffset -= 1.0f;
+	}
+	else if(glfwGetKey(window.getWindow(), GLFW_KEY_DOWN) == GLFW_PRESS){
+		
+		yoffset -= 1.0f;
+
+	}
+	else if(glfwGetKey(window.getWindow(), GLFW_KEY_UP) == GLFW_PRESS){
+		
+		yoffset += 1.0f;
+	}
+
 
 	yaw += xoffset;
 	pitch += yoffset;

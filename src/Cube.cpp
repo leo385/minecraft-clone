@@ -80,50 +80,68 @@ Cube::Cube(std::unique_ptr<RenderComponent> renderComponent, MvpComponent* mvpCo
 		22, 23, 20
 	};
 
+	vbo = 0;
+	ebo = 0;
 }
 
-Cube::~Cube()
+
+void Cube::deleteBuffers()
 {
-	bufferComponent->deleteVBO(vbo);
-	bufferComponent->deleteEBO();
+	if (vbo != 0) {
+
+		bufferComponent->deleteVBO(vbo);
+		bufferComponent->deleteEBO(ebo);
+
+		textureComponent->deleteTexture();
+
+		vbo = 0;
+		ebo = 0;
+	}
 }
+
 
 void Cube::init()
 { 
-	  // shader component
-	  shaderComponent->compileShaderFromFile("cubeVertexShader.vert", "cubeFragmentShader.frag");
+	GLint vboSize = 0;
 
-	  // generate buffers
-	  bufferComponent->generateVBO(vbo);
-	  bufferComponent->generateEBO();
+	if (vbo == 0) {
 
-	  // bind buffer component
-	  bufferComponent->bindVBO(vertices, vbo);
-	  bufferComponent->bindEBO(indices);
-	  
-	  // vertex position
-	  bufferComponent->setAttribPointer(0, 3, 5, 0);
+		// shader component
+		shaderComponent->compileShaderFromFile("cubeVertexShader.vert", "cubeFragmentShader.frag");
 
-	  // tex uv coords
-	  bufferComponent->setAttribPointer(1, 2, 5, 3);
+		// generate buffers
+		bufferComponent->generateVBO(vbo);
+		bufferComponent->generateEBO(ebo);
 
-	  // unbind VBO, EBO
-	  bufferComponent->unbindVBO();
+		// bind buffer component
+		bufferComponent->bindVBO(vertices, vbo);
+		bufferComponent->bindEBO(indices, ebo);
 
-	  textureComponent->applyTexture();
+		// vertex position
+		bufferComponent->setAttribPointer(0, 3, 5, 0);
 
+		// tex uv coords
+		bufferComponent->setAttribPointer(1, 2, 5, 3);
 
-	  // set model for mvp
-	  mvpComponent->setModel(glm::vec3(0.0f, 0.0f, -10.0f));
+		// unbind VBO, EBO
+		bufferComponent->unbindVBO();
+
+		textureComponent->applyTexture();
+
+	}
 }
 
 
 void Cube::sendToShader()
 {
-	  // shader component
-	  shaderComponent->useShaderProgram();
 
-	  mvpComponent->sendToShader(shaderComponent->getProgramID(), "mvp");
+		// shader component
+		shaderComponent->useShaderProgram();
 
-      textureComponent->sendToShader(shaderComponent->getProgramID());
+		mvpComponent->sendToShader(shaderComponent->getProgramID(), "mvp");
+
+		textureComponent->sendToShader(shaderComponent->getProgramID());
+
+		textureComponent->unbindTexture();
+	
 }

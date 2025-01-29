@@ -15,6 +15,11 @@ void Camera::handleInput(const IWindow& _window)
 {
 	float cameraSpeed = 2.5f * Time_utils::getDeltaTime();
 
+	if (glfwGetKey(_window.getWindow(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+
+		cameraSpeed = 0.20f;
+	}
+
 	//std::cout << Time::getDeltaTime() << "\n";
 
 	if (glfwGetKey(_window.getWindow(), GLFW_KEY_W) == GLFW_PRESS) {
@@ -35,8 +40,6 @@ void Camera::handleInput(const IWindow& _window)
 	if (glfwGetKey(_window.getWindow(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
 		cameraPos.y -= cameraSpeed;
 	}
-
-	
 
 }
 

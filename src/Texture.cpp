@@ -11,6 +11,7 @@ void Texture::init(GLuint* textureID, GLenum activeTexture)
 	glGenTextures(1, textureID);
 	glActiveTexture(activeTexture);
 	glBindTexture(GL_TEXTURE_2D, *textureID);
+
 }
 
 void Texture::setTextureParameter(int textureMode, int min_filtering_mode, int mag_filtering_mode)
@@ -47,4 +48,9 @@ void Texture::sendTextureToShader(const unsigned int& shaderID, const char* unif
 void Texture::unbindTexture()
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Texture::deleteTexture(const unsigned int& textureID)
+{
+	glDeleteTextures(1, &textureID);
 }

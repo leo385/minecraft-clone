@@ -22,7 +22,7 @@ bool Application::Initialize() {
 
 
 	if (!glfwInit()) {
-		std::cerr << "B³¹d inicjalizacji GLFW\n";
+		std::cerr << "Bï¿½ï¿½d inicjalizacji GLFW\n";
 		return false;
 	}
 
@@ -43,7 +43,7 @@ bool Application::Initialize() {
 	glewExperimental = GL_TRUE;
 
 	if (glewInit() != GLEW_OK) {
-		std::cerr << "Nie uda³o siê zainicjalizowaæ biblioteki GLEW\n";
+		std::cerr << "Nie udaï¿½o siï¿½ zainicjalizowaï¿½ biblioteki GLEW\n";
 		return false;
 	}
 
@@ -54,7 +54,7 @@ void Application::Run()
 {
 	// Pobranie wersji OpenGL
     const GLubyte* renderer = glGetString(GL_RENDERER); // pobiera renderer
-    const GLubyte* version = glGetString(GL_VERSION); // pobiera wersjê OpenGL
+    const GLubyte* version = glGetString(GL_VERSION); // pobiera wersjï¿½ OpenGL
 
     std::cout << "Renderer: " << renderer << std::endl;
     std::cout << "OpenGL version supported: " << version << std::endl;

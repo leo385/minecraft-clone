@@ -13,6 +13,5 @@ private:
 public:
 	CameraMoving();
 	void moveCameraWithMouse(const IWindow& window, Camera& camera);
-
 };
 

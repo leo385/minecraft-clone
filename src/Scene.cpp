@@ -9,11 +9,10 @@ Scene::Scene(const IWindow& window) : window(window){
 	mvpComponent = new MvpComponent();
 	playerView = std::make_unique<PlayerViewComponent>(*mvpComponent);
 
-
-	cubeRender = std::make_unique<CubeRenderComponent>();
-	cubeGrassTexture = std::make_unique<GrassTextureComponent>();
-	cubeShader = std::make_unique<ShaderComponent>();
-	cubeBuffer = std::make_unique<BufferComponent>();
+	//cubeRender = std::make_unique<CubeRenderComponent>();
+	//cubeGrassTexture = std::make_unique<GrassTextureComponent>();
+	//cubeShader = std::make_unique<ShaderComponent>();
+	//cubeBuffer = std::make_unique<BufferComponent>();
 
 }
 
@@ -38,16 +37,21 @@ void Scene::init()
 	mvpComponent->setProjection(static_cast<float>(window.getWidth()) / static_cast<float>(window.getHeight()));
 
 	// cube stuff
-	cubeMesh = std::make_unique<Cube>(std::move(cubeRender), std::move(mvpComponent), std::move(cubeGrassTexture), std::move(cubeShader), std::move(cubeBuffer));
-	cubeBoard = std::make_unique<CubeBoard>(*cubeMesh, std::move(cubeBuffer));
+	/*cubeMesh = std::make_unique<Cube>(std::move(cubeRender), std::move(mvpComponent), std::move(cubeGrassTexture), std::move(cubeShader), std::move(cubeBuffer));
+	cubeBoard = std::make_unique<CubeBoard>(*cubeMesh, std::move(cubeBuffer));*/
 
-	cubeBoard->init();
+	//cubeBoard->init();
 
+	// Create big cube terrain
+	manageBoard = std::make_unique<ManageBoards>(std::move(mvpComponent), *player);
+	
+	//manageBoard->init();
 }
 
 void Scene::render()
 {
-	cubeBoard->render();
+	//cubeBoard->render();
+	manageBoard->render(mvpComponent);
 }
 
 void Scene::update()

@@ -17,6 +17,7 @@ public:
 	void loadTextureIntoGL(const char* filename);
 	void sendTextureToShader(const unsigned int& shaderID, const char* uniform_name, int slot);
 	void unbindTexture();
+	void deleteTexture(const unsigned int& textureID);
 
 };
 

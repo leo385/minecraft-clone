@@ -3,8 +3,6 @@
 
 void GrassTextureComponent::applyTexture(){
   
-    GLuint textureID[3];
-     
     // init front texture
     texture.init(&textureID[0], GL_TEXTURE0);
     texture.setTextureParameter(GL_CLAMP_TO_BORDER, GL_NEAREST, GL_LINEAR_MIPMAP_LINEAR);
@@ -28,4 +26,16 @@ void GrassTextureComponent::sendToShader(const unsigned int& shaderID){
     texture.sendTextureToShader(shaderID, "texture1", 1);
     texture.sendTextureToShader(shaderID, "texture2", 2);
 
+}
+
+void GrassTextureComponent::unbindTexture()
+{
+    texture.unbindTexture();
+}
+
+void GrassTextureComponent::deleteTexture()
+{
+    texture.deleteTexture(textureID[0]);
+    texture.deleteTexture(textureID[1]);
+    texture.deleteTexture(textureID[2]);
 }
