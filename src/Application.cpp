@@ -1,10 +1,6 @@
 #include "Application.h"
 #include <iostream>
 
-#include "imgui/imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-
 Application::Application() { window = std::make_unique<Window>(); }
 
 Application::~Application() { Terminate(); }

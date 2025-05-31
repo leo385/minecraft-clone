@@ -2,6 +2,11 @@
 #include "CubeRenderComponent.h"
 #include "GrassTextureComponent.h"
 
+#include "CubeBoard.h"
+#include "ShaderComponent.h"
+
+#include <glm/glm.hpp>
+
 Scene::Scene(const IWindow &window) : window(window) {
 
   camera = std::make_unique<Camera>();

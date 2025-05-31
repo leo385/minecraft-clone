@@ -1,38 +1,39 @@
 #pragma once
 
-#include "BufferComponent.h"
-#include "MvpComponent.h"
-#include "RenderComponent.h"
-#include "ShaderComponent.h"
-#include "TextureComponent.h"
+#include "types/gl_types.h"
+#include "types/object_types.h"
 
-#include <memory>
 #include <vector>
 
-class Cube {
+class RenderComponent;
+class MvpComponent;
+class TextureComponent;
+class ShaderComponent;
+class BufferComponent;
 
+class Cube {
 public:
   Cube() = default;
-  Cube(std::unique_ptr<RenderComponent> renderComponent,
+  Cube(component_types::UniqueComponent<RenderComponent> renderComponent,
        MvpComponent *mvpComponent,
-       std::unique_ptr<TextureComponent> textureComponent,
-       std::unique_ptr<ShaderComponent> shaderComponent,
-       std::unique_ptr<BufferComponent> bufferComponent);
+       component_types::UniqueComponent<TextureComponent> textureComponent,
+       component_types::UniqueComponent<ShaderComponent> shaderComponent,
+       component_types::UniqueComponent<BufferComponent> bufferComponent);
   ~Cube();
 
   void init();
   void sendToShader();
 
 private:
-  std::unique_ptr<RenderComponent> renderComponent;
-  std::unique_ptr<TextureComponent> textureComponent;
-  std::unique_ptr<ShaderComponent> shaderComponent;
-  std::unique_ptr<BufferComponent> bufferComponent;
+  component_types::UniqueComponent<RenderComponent> renderComponent;
+  component_types::UniqueComponent<TextureComponent> textureComponent;
+  component_types::UniqueComponent<ShaderComponent> shaderComponent;
+  component_types::UniqueComponent<BufferComponent> bufferComponent;
 
   MvpComponent *mvpComponent;
 
-  std::vector<GLfloat> vertices{0};
-  std::vector<GLuint> indices{0};
+  std::vector<gl::GLfloat> vertices{0};
+  std::vector<gl::GLuint> indices{0};
 
-  GLuint vbo;
+  gl::GLuint vbo;
 };

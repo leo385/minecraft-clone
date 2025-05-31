@@ -22,6 +22,7 @@ set(GLFW_DIR ${CMAKE_SOURCE_DIR}/libs/glfw)
 set(GLEW_DIR ${CMAKE_SOURCE_DIR}/libs/glew)
 set(GLM_DIR ${CMAKE_SOURCE_DIR}/libs)
 set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/libs/imgui)
+set(JSON_DIR ${CMAKE_SOURCE_DIR}/libs/json)
 
 find_package(OpenGL REQUIRED)
 if(OpenGL_FOUND)
@@ -62,7 +63,11 @@ add_library(glm INTERFACE)
 target_include_directories(glm INTERFACE ${GLM_DIR})
 
 # Include files
-include_directories(include ${GLEW_DIR}/include ${GLFW_DIR}/include ${IMGUI_DIR} ${IMGUI_DIR}/backends)
+include_directories(include)
+# Third-party Includes
+include_directories(include/external ${GLEW_DIR}/include ${GLFW_DIR}/include ${IMGUI_DIR} ${IMGUI_DIR}/backends ${JSON_DIR}/single_include)
+# Types include
+include_directories(include/types)
 
 # Add source files
 file(GLOB SOURCES "src/*.cpp"

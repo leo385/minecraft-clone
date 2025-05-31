@@ -1,10 +1,17 @@
 #include "Cube.h"
 
-Cube::Cube(std::unique_ptr<RenderComponent> renderComponent,
+// Components
+#include "BufferComponent.h"
+#include "MvpComponent.h"
+#include "RenderComponent.h"
+#include "ShaderComponent.h"
+#include "TextureComponent.h"
+
+Cube::Cube(component_types::UniqueComponent<RenderComponent> renderComponent,
            MvpComponent *mvpComponent,
-           std::unique_ptr<TextureComponent> textureComponent,
-           std::unique_ptr<ShaderComponent> shaderComponent,
-           std::unique_ptr<BufferComponent> bufferComponent)
+           component_types::UniqueComponent<TextureComponent> textureComponent,
+           component_types::UniqueComponent<ShaderComponent> shaderComponent,
+           component_types::UniqueComponent<BufferComponent> bufferComponent)
     : renderComponent(std::move(renderComponent)),
       mvpComponent(std::move(mvpComponent)),
       textureComponent(std::move(textureComponent)),

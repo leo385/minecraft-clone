@@ -7,14 +7,19 @@
 
 #include "MvpComponent.h"
 
-#include "CubeBoard.h"
+#include "object_types.h"
+
+// forward declarations
+class CubeBoard;
+
+using namespace component_types;
 
 class Scene {
 private:
-  std::unique_ptr<RenderComponent> cubeRender;
-  std::unique_ptr<TextureComponent> cubeGrassTexture;
-  std::unique_ptr<ShaderComponent> cubeShader;
-  std::unique_ptr<BufferComponent> cubeBuffer;
+  UniqueComponent<RenderComponent> cubeRender;
+  UniqueComponent<TextureComponent> cubeGrassTexture;
+  UniqueComponent<ShaderComponent> cubeShader;
+  UniqueComponent<BufferComponent> cubeBuffer;
 
   MvpComponent *mvpComponent;
 
