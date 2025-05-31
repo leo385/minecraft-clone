@@ -1,42 +1,38 @@
 #pragma once
+#include <GL/glew.h>
 
-#include "Cube.h"
 #include "Camera.h"
 #include "CameraMoving.h"
-#include "CubeRenderComponent.h"
-#include "GrassTextureComponent.h"
+#include "Cube.h"
 
 #include "MvpComponent.h"
 
 #include "CubeBoard.h"
 
-class Scene
-{
+class Scene {
 private:
+  std::unique_ptr<RenderComponent> cubeRender;
+  std::unique_ptr<TextureComponent> cubeGrassTexture;
+  std::unique_ptr<ShaderComponent> cubeShader;
+  std::unique_ptr<BufferComponent> cubeBuffer;
 
-	std::unique_ptr<RenderComponent> cubeRender;
-	std::unique_ptr<TextureComponent> cubeGrassTexture;
-	std::unique_ptr<ShaderComponent> cubeShader;
-	std::unique_ptr<BufferComponent> cubeBuffer;
-	
-	MvpComponent* mvpComponent;
+  MvpComponent *mvpComponent;
 
-	std::unique_ptr<Cube> cubeMesh;
-	std::unique_ptr<CubeBoard> cubeBoard;
+  std::unique_ptr<Cube> cubeMesh;
+  std::unique_ptr<CubeBoard> cubeBoard;
 
-	std::unique_ptr<Camera> camera;
-	CameraMoving cameraMoving;
+  std::unique_ptr<Camera> camera;
+  CameraMoving cameraMoving;
 
-	const IWindow& window;
+  const IWindow &window;
 
-	void setViewCamera();
+  void setViewCamera();
 
 public:
-	explicit Scene(const IWindow&);
-	~Scene();
+  explicit Scene(const IWindow &);
+  ~Scene();
 
-	void init();
-	void render();
-	void handleInput();
+  void init();
+  void render();
+  void handleInput();
 };
-

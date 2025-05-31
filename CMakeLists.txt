@@ -1,13 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Ustaw nazwę projektu i jego wersję
 project(MinecraftClone VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-
-# Flagi dla clanga
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 endif()
@@ -25,48 +23,48 @@ set(GLEW_DIR ${CMAKE_SOURCE_DIR}/libs/glew)
 set(GLM_DIR ${CMAKE_SOURCE_DIR}/libs)
 set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/libs/imgui)
 
-# Find opengl WIN
 find_package(OpenGL REQUIRED)
-
-# Wypisanie statusu OpenGL
 if(OpenGL_FOUND)
     message(STATUS "OpenGL found: ${OPENGL_LIBRARIES}")
 else()
     message(FATAL_ERROR "OpenGL not found")
 endif()
 
-# Add glfw
-add_library(glfw STATIC IMPORTED)
+find_package(GLEW REQUIRED)
+if(GLEW_FOUND)
+  message(STATUS "GLEW found: ${OPENGL_LIBRARIES}")
+else()
+  message(FATAL_ERROR "GLEW not found")
+endif()
 
+# Add libs to MSVC on Windows
 if(MSVC)
+  add_library(glfw STATIC IMPORTED)
 	set_target_properties(glfw PROPERTIES
 	      IMPORTED_LOCATION "${GLFW_DIR}/lib-vc2022/glfw3.lib"
 		    INTERFACE_INCLUDE_DIRECTORIES "${GLFW_DIR}/include"
 	)
-else()
-	set_target_properties(glfw PROPERTIES
-	IMPORTED_LOCATION "${GLFW_DIR}/lib-mingw-w64/libglfw3.a"
-		    INTERFACE_INCLUDE_DIRECTORIES "${GLFW_DIR}/include"
-	)
 endif()
 
+find_package(glfw3 REQUIRED)
 
 # Add glew
+if(MSVC)
 add_library(glew STATIC IMPORTED)
 set_target_properties(glew PROPERTIES
   IMPORTED_LOCATION "${GLEW_DIR}/lib/Release/x64/glew32.lib"
 	INTERFACE_INCLUDE_DIRECTORIES "${GLEW_DIR}/include"
 )
+endif()
 
-# Add GLM
+# Add GLM both platforms Unix, Windows
 add_library(glm INTERFACE)
 target_include_directories(glm INTERFACE ${GLM_DIR})
 
 # Include files
 include_directories(include ${GLEW_DIR}/include ${GLFW_DIR}/include ${IMGUI_DIR} ${IMGUI_DIR}/backends)
 
-
-# Zdefiniuj pliki źródłowe
+# Add source files
 file(GLOB SOURCES "src/*.cpp"
 
     # IMGUI SOURCE FILES
@@ -78,15 +76,14 @@ file(GLOB SOURCES "src/*.cpp"
     "libs/imgui/backends/imgui_impl_opengl3.cpp"
 )
 
-# Tworzenie wykonywalnego pliku
+# make program from .cpp files
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Powiąż biblioteki z projektem
-
-target_link_libraries(${PROJECT_NAME} PRIVATE 
-    glew
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    ${OPENGL_LIBRARIES}
+    GLEW::GLEW
     glfw
-    ${OPENGL_LIBRARIES} 
     glm
 )
 

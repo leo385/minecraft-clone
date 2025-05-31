@@ -2,7 +2,8 @@
 
 #include "RenderComponent.h"
 
-class CubeRenderComponent : public RenderComponent{
+class CubeRenderComponent : public RenderComponent {
 public:
-    void render(const std::vector<GLuint>& indices) override;
+  ~CubeRenderComponent() = default;
+  void render(const std::vector<GLuint> &indices) override;
 };

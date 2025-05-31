@@ -4,8 +4,7 @@
 
 struct BuffersObjectUnit {
 
-	GLuint VAO;
-	GLuint VBO;
-	GLuint EBO;
-
+  GLuint VAO;
+  GLuint VBO;
+  GLuint EBO;
 };

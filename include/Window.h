@@ -3,51 +3,48 @@
 #include <GLFW/glfw3.h>
 
 #include "IWindow.h"
-#include "MouseController.h"
 
-
-class Window : public IWindow{
+class Window : public IWindow {
 
 public:
-	Window() = default;
-	~Window();
+  Window() = default;
+  ~Window();
 
-	inline int getWidth() const override;
-	inline int getHeight() const override;
-	
-	bool getFocused() const override;
+  inline int getWidth() const override;
+  inline int getHeight() const override;
 
-	inline GLFWwindow* getWindow() const override;
+  bool getFocused() const override;
 
-	bool initialize();
+  inline GLFWwindow *getWindow() const override;
 
-	void setOpenGLVersion();
-	void createWindow(int width, int height);
-	void makeContextCurrentFrame();
-	void setFrameBufferSizeCallback();
+  bool initialize();
 
-	void setWindowFocusAttrib();
+  void setOpenGLVersion();
+  void createWindow(int width, int height);
+  void makeContextCurrentFrame();
+  void setFrameBufferSizeCallback();
 
-	static void setFocusedOnWindow(GLFWwindow* window, int focused);
-	void setWindowFocusCallback();
+  void setWindowFocusAttrib();
 
-	void setCursorDisabled();
-	void setCursorPositionCallback();
+  static void setFocusedOnWindow(GLFWwindow *window, int focused);
+  void setWindowFocusCallback();
 
-	int windowShouldClose();
+  void setCursorDisabled();
+  void setCursorPositionCallback();
 
-	void swapBuffers();
-	void destroyWindow();
-	
+  int windowShouldClose();
+
+  void swapBuffers();
+  void destroyWindow();
 
 private:
-	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+  static void framebuffer_size_callback(GLFWwindow *window, int width,
+                                        int height);
 
-	GLFWwindow* window{ nullptr };
+  GLFWwindow *window{nullptr};
 
-	int _width;
-	int _height;
+  int _width;
+  int _height;
 
-    static bool _focused;
-	
+  static bool _focused;
 };

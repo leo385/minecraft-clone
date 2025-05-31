@@ -1,129 +1,211 @@
 #include "Cube.h"
 
-#include "ShaderFile.h"
+Cube::Cube(std::unique_ptr<RenderComponent> renderComponent,
+           MvpComponent *mvpComponent,
+           std::unique_ptr<TextureComponent> textureComponent,
+           std::unique_ptr<ShaderComponent> shaderComponent,
+           std::unique_ptr<BufferComponent> bufferComponent)
+    : renderComponent(std::move(renderComponent)),
+      mvpComponent(std::move(mvpComponent)),
+      textureComponent(std::move(textureComponent)),
+      shaderComponent(std::move(shaderComponent)),
+      bufferComponent(std::move(bufferComponent)) {
+  // Przesuniêcie, ¿eby zapobiec nak³adaniu siê tekstur z kolorem obiektu.
+  float offset = 0.0001f;
 
+  vertices = {
+      // Pozycje					   // Tekstury
+      // Przednia œciana
+      -0.5f,
+      -0.5f,
+      0.5f + offset,
+      1.0f,
+      1.0f, // Lewy dolny
+      0.5f,
+      -0.5f,
+      0.5f + offset,
+      0.0f,
+      1.0f, // Prawy dolny
+      0.5f,
+      0.5f,
+      0.5f + offset,
+      0.0f,
+      0.0f, // Prawy górny
+      -0.5f,
+      0.5f,
+      0.5f + offset,
+      1.0f,
+      0.0f, // Lewy górny
 
-#include <iostream>
+      // Tylna œciana
+      -0.5f,
+      -0.5f,
+      -0.5f - offset,
+      1.0f,
+      1.0f,
+      0.5f,
+      -0.5f,
+      -0.5f - offset,
+      0.0f,
+      1.0f,
+      0.5f,
+      0.5f,
+      -0.5f - offset,
+      0.0f,
+      0.0f,
+      -0.5f,
+      0.5f,
+      -0.5f - offset,
+      1.0f,
+      0.0f,
 
+      // Lewa œciana
+      -0.5f - offset,
+      0.5f,
+      0.5f,
+      0.0f,
+      0.0f,
+      -0.5f - offset,
+      0.5f,
+      -0.5f,
+      1.0f,
+      0.0f,
+      -0.5f - offset,
+      -0.5f,
+      -0.5f,
+      1.0f,
+      1.0f,
+      -0.5f - offset,
+      -0.5f,
+      0.5f,
+      0.0f,
+      1.0f,
 
-Cube::Cube(std::unique_ptr<RenderComponent> renderComponent, MvpComponent* mvpComponent, std::unique_ptr<TextureComponent> textureComponent,
-       std::unique_ptr<ShaderComponent> shaderComponent, std::unique_ptr<BufferComponent> bufferComponent) 
-        : renderComponent(std::move(renderComponent)), mvpComponent(std::move(mvpComponent)), textureComponent(std::move(textureComponent)),
-          shaderComponent(std::move(shaderComponent)), bufferComponent(std::move(bufferComponent))
-{
-	// Przesuniêcie, ¿eby zapobiec nak³adaniu siê tekstur z kolorem obiektu.
-	float offset = 0.0001f;
+      // Prawa œciana
+      0.5f + offset,
+      0.5f,
+      0.5f,
+      0.0f,
+      0.0f,
+      0.5f + offset,
+      0.5f,
+      -0.5f,
+      1.0f,
+      0.0f,
+      0.5f + offset,
+      -0.5f,
+      -0.5f,
+      1.0f,
+      1.0f,
+      0.5f + offset,
+      -0.5f,
+      0.5f,
+      0.0f,
+      1.0f,
 
-	vertices = {
-	// Pozycje					   // Tekstury
-	// Przednia œciana
-	-0.5f, -0.5f,  0.5f + offset,  1.0f, 1.0f,  // Lewy dolny
-	 0.5f, -0.5f,  0.5f + offset,  0.0f, 1.0f,  // Prawy dolny
-	 0.5f,  0.5f,  0.5f + offset,  0.0f, 0.0f,  // Prawy górny
-	-0.5f,  0.5f,  0.5f + offset,  1.0f, 0.0f,  // Lewy górny
+      // Dolna œciana
+      -0.5f,
+      -0.5f - offset,
+      -0.5f,
+      0.0f,
+      1.0f,
+      0.5f,
+      -0.5f - offset,
+      -0.5f,
+      1.0f,
+      1.0f,
+      0.5f,
+      -0.5f - offset,
+      0.5f,
+      1.0f,
+      0.0f,
+      -0.5f,
+      -0.5f - offset,
+      0.5f,
+      0.0f,
+      0.0f,
 
-	// Tylna œciana
-	-0.5f, -0.5f, -0.5f - offset,  1.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f - offset,  0.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f - offset,  0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f - offset,  1.0f, 0.0f,
+      // Górna œciana
+      -0.5f,
+      0.5f + offset,
+      -0.5f,
+      0.0f,
+      1.0f,
+      0.5f,
+      0.5f + offset,
+      -0.5f,
+      1.0f,
+      1.0f,
+      0.5f,
+      0.5f + offset,
+      0.5f,
+      1.0f,
+      0.0f,
+      -0.5f,
+      0.5f + offset,
+      0.5f,
+      0.0f,
+      0.0f,
 
-	// Lewa œciana
-	-0.5f - offset,  0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f - offset,  0.5f, -0.5f,  1.0f, 0.0f,
-	-0.5f - offset, -0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f - offset, -0.5f,  0.5f,  0.0f, 1.0f,
+  };
 
-	// Prawa œciana
-	 0.5f + offset,  0.5f,  0.5f,  0.0f, 0.0f,
-	 0.5f + offset,  0.5f, -0.5f,  1.0f, 0.0f,
-	 0.5f + offset, -0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f + offset, -0.5f,  0.5f,  0.0f, 1.0f,
+  indices = {// Przednia œciana
+             0, 1, 2, 2, 3, 0,
 
-	 // Dolna œciana
-	 -0.5f, -0.5f - offset, -0.5f,  0.0f, 1.0f,
-	  0.5f, -0.5f - offset, -0.5f,  1.0f, 1.0f,
-	  0.5f, -0.5f - offset,  0.5f,  1.0f, 0.0f,
-	 -0.5f, -0.5f - offset,  0.5f,  0.0f, 0.0f,
+             // Tylnia œciana
+             4, 5, 6, 6, 7, 4,
 
-	 // Górna œciana
-	 -0.5f,  0.5f + offset, -0.5f,  0.0f, 1.0f,
-	  0.5f,  0.5f + offset, -0.5f,  1.0f, 1.0f,
-	  0.5f,  0.5f + offset,  0.5f,  1.0f, 0.0f,
-	 -0.5f,  0.5f + offset,  0.5f,  0.0f, 0.0f,
+             // Lewa œciana
+             8, 9, 10, 10, 11, 8,
 
-	};
+             // Prawa œciana
+             12, 13, 14, 14, 15, 12,
 
-	indices = {
-		// Przednia œciana
-		0, 1, 2,
-		2, 3, 0,
+             // Dolna œciana
+             16, 17, 18, 18, 19, 16,
 
-		// Tylnia œciana
-		4, 5, 6,
-		6, 7, 4,
-
-		// Lewa œciana
-		8, 9, 10,
-		10, 11, 8,
-
-		// Prawa œciana
-		12, 13, 14,
-		14, 15, 12,
-
-		// Dolna œciana
-		16, 17, 18,
-		18, 19, 16,
-
-		// Górna œciana
-		20, 21, 22,
-		22, 23, 20
-	};
-
+             // Górna œciana
+             20, 21, 22, 22, 23, 20};
 }
 
-Cube::~Cube()
-{
-	bufferComponent->deleteVBO(vbo);
-	bufferComponent->deleteEBO();
+Cube::~Cube() {
+  bufferComponent->deleteVBO(vbo);
+  bufferComponent->deleteEBO();
 }
 
-void Cube::init()
-{ 
-	  // shader component
-	  shaderComponent->compileShaderFromFile("cubeVertexShader.vert", "cubeFragmentShader.frag");
+void Cube::init() {
+  // shader component
+  shaderComponent->compileShaderFromFile("cubeVertexShader.vert",
+                                         "cubeFragmentShader.frag");
 
-	  // generate buffers
-	  bufferComponent->generateVBO(vbo);
-	  bufferComponent->generateEBO();
+  // generate buffers
+  bufferComponent->generateVBO(vbo);
+  bufferComponent->generateEBO();
 
-	  // bind buffer component
-	  bufferComponent->bindVBO(vertices, vbo);
-	  bufferComponent->bindEBO(indices);
-	  
-	  // vertex position
-	  bufferComponent->setAttribPointer(0, 3, 5, 0);
+  // bind buffer component
+  bufferComponent->bindVBO(vertices, vbo);
+  bufferComponent->bindEBO(indices);
 
-	  // tex uv coords
-	  bufferComponent->setAttribPointer(1, 2, 5, 3);
+  // vertex position
+  bufferComponent->setAttribPointer(0, 3, 5, 0);
 
-	  // unbind VBO, EBO
-	  bufferComponent->unbindVBO();
+  // tex uv coords
+  bufferComponent->setAttribPointer(1, 2, 5, 3);
 
-	  textureComponent->applyTexture();
+  // unbind VBO, EBO
+  bufferComponent->unbindVBO();
 
+  textureComponent->applyTexture();
 
-	  // set model for mvp
-	  mvpComponent->setModel(glm::vec3(0.0f, 0.0f, -3.0f));
+  // set model for mvp
+  mvpComponent->setModel(glm::vec3(0.0f, 0.0f, -3.0f));
 }
 
+void Cube::sendToShader() {
+  // shader component
+  shaderComponent->useShaderProgram();
 
-void Cube::sendToShader()
-{
-	  // shader component
-	  shaderComponent->useShaderProgram();
+  mvpComponent->sendToShader(shaderComponent->getProgramID(), "mvp");
 
-	  mvpComponent->sendToShader(shaderComponent->getProgramID(), "mvp");
-
-      textureComponent->sendToShader(shaderComponent->getProgramID());
+  textureComponent->sendToShader(shaderComponent->getProgramID());
 }
