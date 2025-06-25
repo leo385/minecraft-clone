@@ -1,0 +1,11 @@
+Mesh{
+    vertices-front-wall{
+        left-bottom-point{
+          x: -0.5,
+          y: -0.5,
+          z:  1.0,
+          u:  1.0,
+          v:  1.0
+        },
+    },
+}
