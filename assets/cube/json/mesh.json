@@ -1,11 +1,97 @@
-Mesh{
-    vertices-front-wall{
-        left-bottom-point{
-          x: -0.5,
-          y: -0.5,
-          z:  1.0,
-          u:  1.0,
-          v:  1.0
+{
+  "Mesh": {
+    "vertices": {
+      "front-wall": {
+        "left-bottom-point": {
+          "x": -0.5, "y": -0.5, "z": 1.0, "u": 0.0, "v": 1.0
         },
+        "right-bottom-point": {
+          "x": 0.5, "y": -0.5, "z": 1.0, "u": 1.0, "v": 1.0
+        },
+        "right-top-point": {
+          "x": 0.5, "y": 0.5, "z": 1.0, "u": 1.0, "v": 0.0
+        },
+        "left-top-point": {
+          "x": -0.5, "y": 0.5, "z": 1.0, "u": 0.0, "v": 0.0
+        }
+      },
+      "back-wall": {
+        "left-bottom-point": {
+          "x": -0.5, "y": -0.5, "z": -0.5, "u": 0.0, "v": 1.0
+        },
+        "right-bottom-point": {
+          "x": 0.5, "y": -0.5, "z": -0.5, "u": 1.0, "v": 1.0
+        },
+        "right-top-point": {
+          "x": 0.5, "y": 0.5, "z": -0.5, "u": 1.0, "v": 0.0
+        },
+        "left-top-point": {
+          "x": -0.5, "y": 0.5, "z": -0.5, "u": 0.0, "v": 0.0
+        }
+      },
+      "left-wall": {
+        "left-bottom-point": {
+          "x": -0.5, "y": -0.5, "z": -0.5, "u": 0.0, "v": 1.0
+        },
+        "right-bottom-point": {
+          "x": -0.5, "y": -0.5, "z": 0.5, "u": 1.0, "v": 1.0
+        },
+        "right-top-point": {
+          "x": -0.5, "y": 0.5, "z": 0.5, "u": 1.0, "v": 0.0
+        },
+        "left-top-point": {
+          "x": -0.5, "y": 0.5, "z": -0.5, "u": 0.0, "v": 0.0
+        }
+      },
+      "right-wall": {
+        "left-bottom-point": {
+          "x": 0.5, "y": -0.5, "z": 0.5, "u": 0.0, "v": 1.0
+        },
+        "right-bottom-point": {
+          "x": 0.5, "y": -0.5, "z": -0.5, "u": 1.0, "v": 1.0
+        },
+        "right-top-point": {
+          "x": 0.5, "y": 0.5, "z": -0.5, "u": 1.0, "v": 0.0
+        },
+        "left-top-point": {
+          "x": 0.5, "y": 0.5, "z": 0.5, "u": 0.0, "v": 0.0
+        }
+      },
+      "bottom-wall": {
+        "left-bottom-point": {
+          "x": -0.5, "y": -0.5, "z": 0.5, "u": 0.0, "v": 1.0
+        },
+        "right-bottom-point": {
+          "x": 0.5, "y": -0.5, "z": 0.5, "u": 1.0, "v": 1.0
+        },
+        "right-top-point": {
+          "x": 0.5, "y": -0.5, "z": -0.5, "u": 1.0, "v": 0.0
+        },
+        "left-top-point": {
+          "x": -0.5, "y": -0.5, "z": -0.5, "u": 0.0, "v": 0.0
+        }
+      },
+      "top-wall": {
+        "left-bottom-point": {
+          "x": -0.5, "y": 0.5, "z": -0.5, "u": 0.0, "v": 1.0
+        },
+        "right-bottom-point": {
+          "x": 0.5, "y": 0.5, "z": -0.5, "u": 1.0, "v": 1.0
+        },
+        "right-top-point": {
+          "x": 0.5, "y": 0.5, "z": 0.5, "u": 1.0, "v": 0.0
+        },
+        "left-top-point": {
+          "x": -0.5, "y": 0.5, "z": 0.5, "u": 0.0, "v": 0.0
+        }
+      }
     },
+    "indices": {
+      "front-wall": [0, 1, 2, 3, 0],
+      "back-wall": [4, 5, 6, 7, 4],
+      "left-wall": [8, 9, 10, 11, 8],
+      "right-wall": [12, 13, 14, 15, 12],
+      "bottom-wall": [16, 17, 18, 19, 16]
+    }
+  }
 }

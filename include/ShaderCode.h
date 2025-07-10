@@ -1,8 +1,7 @@
 #pragma once
 
-
 struct ShaderCode {
 
-	const char* vShaderCode;
-	const char* fShaderCode;
+  const char *vShaderCode;
+  const char *fShaderCode;
 };

@@ -5,6 +5,7 @@ project(MinecraftClone VERSION 1.0)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_BUILD_TYPE Debug)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
@@ -68,6 +69,10 @@ include_directories(include)
 include_directories(include/external ${GLEW_DIR}/include ${GLFW_DIR}/include ${IMGUI_DIR} ${IMGUI_DIR}/backends ${JSON_DIR}/single_include)
 # Types include
 include_directories(include/types)
+# Abstract class / interfaces include
+include_directories(include/interfaces)
+# Patterns which are inline
+include_directories(include/patterns)
 
 # Add source files
 file(GLOB SOURCES "src/*.cpp"

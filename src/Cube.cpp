@@ -7,6 +7,8 @@
 #include "ShaderComponent.h"
 #include "TextureComponent.h"
 
+#include "CubeMeshJsonParser.h"
+
 Cube::Cube(component_types::UniqueComponent<RenderComponent> renderComponent,
            MvpComponent *mvpComponent,
            component_types::UniqueComponent<TextureComponent> textureComponent,
@@ -18,7 +20,13 @@ Cube::Cube(component_types::UniqueComponent<RenderComponent> renderComponent,
       shaderComponent(std::move(shaderComponent)),
       bufferComponent(std::move(bufferComponent)) {
   // Przesuniêcie, ¿eby zapobiec nak³adaniu siê tekstur z kolorem obiektu.
-  float offset = 0.0001f;
+  float offset{0.0001f};
+
+  CubeMeshJsonParser cubeJsonParser;
+
+  // double leftBottomPointX =
+  //     j["Mesh"]["vertices"]["front-wall"]["left-bottom-point"]["x"];
+  // std::cout << "leftBottomPointX: " << leftBottomPointX << "\n";
 
   vertices = {
       // Pozycje					   // Tekstury

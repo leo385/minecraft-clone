@@ -2,23 +2,19 @@
 
 #include <string>
 
-
 class ShaderFile {
 
 public:
-	ShaderFile() = default;
+  ShaderFile() = default;
 
-	~ShaderFile(){}
-	
-	void openShaderFile(const char* vertexPathFile, const char* fragmentPathFile);
+  ~ShaderFile() {}
 
-	std::string getStrVertexCode();
-	std::string getStrFragmentCode();
+  void openShaderFile(const char *vertexPathFile, const char *fragmentPathFile);
 
+  std::string getStrVertexCode();
+  std::string getStrFragmentCode();
 
 private:
-	std::string strVertexCode;
-	std::string strFragmentCode;
-
-
+  std::string strVertexCode;
+  std::string strFragmentCode;
 };
