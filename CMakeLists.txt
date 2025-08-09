@@ -5,7 +5,7 @@ project(MinecraftClone VERSION 1.0)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_BUILD_TYPE Debug)
+#set(CMAKE_BUILD_TYPE Debug)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
@@ -63,6 +63,16 @@ endif()
 add_library(glm INTERFACE)
 target_include_directories(glm INTERFACE ${GLM_DIR})
 
+# Add Imgui library
+add_library(imgui STATIC
+    ${IMGUI_DIR}/imgui.cpp
+    ${IMGUI_DIR}/imgui_draw.cpp
+    ${IMGUI_DIR}/imgui_tables.cpp
+    ${IMGUI_DIR}/imgui_widgets.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+)
+
 # Include files
 include_directories(include)
 # Third-party Includes
@@ -74,20 +84,14 @@ include_directories(include/interfaces)
 # Patterns which are inline
 include_directories(include/patterns)
 
-# Add source files
-file(GLOB SOURCES "src/*.cpp"
+# Add include files
+file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/include/*.h)
 
-    # IMGUI SOURCE FILES
-    "libs/imgui/imgui.cpp"
-    "libs/imgui/imgui_draw.cpp"
-    "libs/imgui/imgui_widgets.cpp"
-    "libs/imgui/imgui_tables.cpp"
-    "libs/imgui/backends/imgui_impl_glfw.cpp"
-    "libs/imgui/backends/imgui_impl_opengl3.cpp"
-)
+# Add source files
+file(GLOB SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 
 # make program from .cpp files
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 
 # Powiąż biblioteki z projektem
 target_link_libraries(${PROJECT_NAME} PRIVATE
@@ -95,6 +99,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     GLEW::GLEW
     glfw
     glm
+    imgui
 )
 
 # Create relative variables path to assets, shaders
@@ -102,4 +107,3 @@ add_definitions(-DASSETS_PATH="${CMAKE_SOURCE_DIR}/assets")
 add_definitions(-DSHADERS_PATH="${CMAKE_SOURCE_DIR}/shader")
 
 add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLEW)
-
