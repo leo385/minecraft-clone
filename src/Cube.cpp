@@ -1,5 +1,7 @@
 #include "Cube.h"
 
+#include <iostream>
+
 // Components
 #include "BufferComponent.h"
 #include "MvpComponent.h"
@@ -22,24 +24,8 @@ Cube::Cube(component_types::UniqueComponent<RenderComponent> renderComponent,
 
   std::unique_ptr<CubeMeshJsonParser> cubeJsonParser = std::make_unique<CubeMeshJsonParser>();
   vertices = cubeJsonParser->getVerticesFromVectorOfWalls(); // 162M used memory
+  indices = cubeJsonParser->getIndicesFromVectorOfWalls();
 
-  indices = {// Przednia œciana
-             0, 1, 2, 2, 3, 0,
-
-             // Tylnia œciana
-             4, 5, 6, 6, 7, 4,
-
-             // Lewa œciana
-             8, 9, 10, 10, 11, 8,
-
-             // Prawa œciana
-             12, 13, 14, 14, 15, 12,
-
-             // Dolna œciana
-             16, 17, 18, 18, 19, 16,
-
-             // Górna œciana
-             20, 21, 22, 22, 23, 20};
 }
 
 Cube::~Cube() {
